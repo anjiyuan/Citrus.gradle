@@ -1,0 +1,22 @@
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'application'
+
+
+tasks.withType(JavaExec) {
+    jvmArgs = ['-Xms16g']
+    args = ["arg1", "arg26"]
+        workingDir='C:/Jiyuan/sourceCode/juicer/data'
+}
+
+mainClassName = 'Citrus.Citrus'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    testImplementation     'junit:junit:4.13'
+    implementation 'com.github.samtools:htsjdk_2.11:1.128'
+    compile fileTree(dir: 'C:\\Jiyuan\\sourceCode\\library', include: 'IGV.jar')
+}
