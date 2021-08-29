@@ -238,7 +238,6 @@ public class Canvas extends JPanel {
 //        return null;
     }    
     
-
     Point get_fragment_min_max(int selected_order, int local_scale) {
         SupperScaffold selectSuperscafforld = assembly_order_map.get((selected_order));
         int selected_order_min_line1 = MARGIN + (int) (selectSuperscafforld.genome_position / (local_scale * 2.0) + 0.5);
