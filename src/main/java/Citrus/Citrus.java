@@ -1266,7 +1266,8 @@ public class Citrus  extends JFrame {
                     int stop_pos = start_pos + canvas.assembly_order_map.get(order_no).size_in_superscaffold;
                     StringBuilder superScaffold_seq = canvas.fasta.get(ID.split(":::")[0]);//superScaffold_seq.length();canvas.fasta.get(">Super-Scaffold_100002").toString().length()
                     if (!first_fragment) {
-                        remaining = remaining.append(Strings.repeat("N", stop_pos - start_pos));
+                        remaining = remaining.append(Strings.repeat("N", 500));
+                    }else{
                         first_fragment = false;
                     }
                     if (canvas.assembly_block_direction.get(order_no) > 0) {
