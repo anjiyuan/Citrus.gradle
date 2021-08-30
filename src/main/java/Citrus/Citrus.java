@@ -1272,11 +1272,7 @@ public class Citrus  extends JFrame {
                     }
                     remaining = new StringBuilder(remaining.substring(i));
                 }
-                if (sb.length() < 1000) {
-                    sb.append(remaining).append("\n");
-                }
                 bw.write(remaining + "\n");
-
                 bw.close();
                 pop_jTextArea.setText(sb.toString());
                 //                    pop_jTextArea.setText(canvas.assembly_fragments.get(canvas.selectedFragment).toString().replace(" ", "\n"));
