@@ -1005,31 +1005,38 @@ public class Citrus  extends JFrame {
                 String current_scaffold = super_tmp.scafold_fragment_subType_ID.split(":::")[0];
                 int current_start = super_tmp.size_in_superscaffold;
                 int chr_no = 0;
+                int Hic_order = -1;//need to be removed
                 while ((line = br.readLine()) != null) {
                     if (line.startsWith(">")) {
                         if (line.startsWith(">")) {
                             super_tmp = new SupperScaffold(line);
                             strarray = line.split(" ");
                             order = Integer.parseInt(strarray[1]);
-                            canvas.assembly_order_map.put(order, super_tmp);
-                            if (current_scaffold.equals(super_tmp.scafold_fragment_subType_ID.split(":::")[0])) {
-                                super_tmp.start_in_superscaffold = current_start;
+                            if (super_tmp.scafold_fragment_subType_ID.toLowerCase().startsWith(">hic_gap")) {
+                                Hic_order = order;
                             } else {
-                                current_scaffold = super_tmp.scafold_fragment_subType_ID.split(":::")[0];
-                                current_start = 0;
+                                canvas.assembly_order_map.put(order, super_tmp);
+                                if (current_scaffold.equals(super_tmp.scafold_fragment_subType_ID.split(":::")[0])) {
+                                    super_tmp.start_in_superscaffold = current_start;
+                                } else {
+                                    current_scaffold = super_tmp.scafold_fragment_subType_ID.split(":::")[0];
+                                    current_start = 0;
+                                }
+                                current_start += super_tmp.size_in_superscaffold;
                             }
-                            current_start += super_tmp.size_in_superscaffold;
                         }
                     } else {
                         strarray = line.split(" ");
                         ArrayList<Integer> tmp = new ArrayList<>();
                         for (String s : strarray) {
                             int block_no = Integer.parseInt(s);
-                            tmp.add(Math.abs(block_no));
-                            if (block_no > 0) {
-                                canvas.assembly_block_direction.put(Math.abs(block_no), 1);
-                            } else {
-                                canvas.assembly_block_direction.put(Math.abs(block_no), -1);
+                            if (block_no != Hic_order) {
+                                tmp.add(Math.abs(block_no));
+                                if (block_no > 0) {
+                                    canvas.assembly_block_direction.put(Math.abs(block_no), 1);
+                                } else {
+                                    canvas.assembly_block_direction.put(Math.abs(block_no), -1);
+                                }
                             }
                         }
                         canvas.assembly_chr_order_list.put(chr_no, tmp);
@@ -1207,7 +1214,7 @@ public class Citrus  extends JFrame {
         BufferedWriter bw = null;
         try {
             JFileChooser jfc = new JFileChooser();
-            jfc.setSelectedFile(new File("HiC_scaffold_1.txt"));
+            jfc.setSelectedFile(new File("HiC_scaffold_1.fasta"));
             jfc.setFileFilter(new javax.swing.filechooser.FileFilter() {
                 public boolean accept(File f) {
                     return f.getName().toLowerCase().endsWith(".fasta") || f.isDirectory();
@@ -1239,6 +1246,7 @@ public class Citrus  extends JFrame {
                 }
                 StringBuilder sb = new StringBuilder();
                 StringBuilder remaining = new StringBuilder();
+                boolean first_fragment = true;
                 for (int order_no : selected_all_order_no) {
 //                int abs_order = Math.abs(order_no);
                     if (canvas.assembly_order_map.get(order_no) == null) {
@@ -1257,16 +1265,16 @@ public class Citrus  extends JFrame {
                     int start_pos = canvas.assembly_order_map.get(order_no).start_in_superscaffold;
                     int stop_pos = start_pos + canvas.assembly_order_map.get(order_no).size_in_superscaffold;
                     StringBuilder superScaffold_seq = canvas.fasta.get(ID.split(":::")[0]);//superScaffold_seq.length();canvas.fasta.get(">Super-Scaffold_100002").toString().length()
-                    if (superScaffold_seq == null) {
+                    if (!first_fragment) {
                         remaining = remaining.append(Strings.repeat("N", stop_pos - start_pos));
+                        first_fragment = false;
+                    }
+                    if (canvas.assembly_block_direction.get(order_no) > 0) {
+                        remaining = remaining.append(superScaffold_seq.substring(start_pos, stop_pos));
                     } else {
-                        if (canvas.assembly_block_direction.get(order_no) > 0) {
-                            remaining = remaining.append(superScaffold_seq.substring(start_pos, stop_pos));
-                        } else {
-                            StringBuilder tmp = new StringBuilder(superScaffold_seq.substring(start_pos, stop_pos));
-                            tmp = new StringBuilder(tmp.reverse().toString().replace('A', '@').replace('T', 'A').replace('@', 'T').replace('G', '$').replace('C', 'G').replace('$', 'C'));
-                            remaining = remaining.append(tmp);
-                        }
+                        StringBuilder tmp = new StringBuilder(superScaffold_seq.substring(start_pos, stop_pos));
+                        tmp = new StringBuilder(tmp.reverse().toString().replace('A', '@').replace('T', 'A').replace('@', 'T').replace('G', '$').replace('C', 'G').replace('$', 'C'));
+                        remaining = remaining.append(tmp);
                     }
 //                bw.write(ID + ":" + order_no +" strand:" + canvas.assembly_block_direction.get(order_no) + "\n");
                     int i = 0;
