@@ -5,6 +5,7 @@
  */
 package Citrus;
 
+import com.google.common.base.Strings;
 import com.mongodb.util.Hash;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -118,16 +119,23 @@ public class Citrus  extends JFrame {
         Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\dat\\inter.hic";
         Hic_fn = "C:\\\\Jiyuan\\\\sourceCode\\\\juicer\\\\data\\\\juicer\\\\juicer\\\\Mod_EXP_REFINEFINAL1_bppAdjust_cmap_NbF1AP_1stpass_fasta_NGScontigs_HYBRID_SCAFFOLD.final.hic";   
 //        Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\Qspa77-bionano-juicer\\EXP_REFINEFINAL1_bppAdjust_cmap_NbQLD-hybrid-3racon-1pilon_fasta_NGScontigs_HYBRID_SCAFFOLD.final.hic";
-        Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.final.hic";
-        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.rawchrom.fasta";
+//        Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.final.hic";
+//        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.rawchrom.fasta";
 //        Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\before_bionano\\CNbD.contigs.rawchrom.hic";
 //        Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\data\\fff.hic";
-        Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\QLD082\\EXP_REFINEFINAL1_bppAdjust_cmap_NbQLD-hybrid-3racon-1pilon_fasta_NGScontigs_HYBRID_SCAFFOLD.final.hic";
-        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\QLD082\\EXP_REFINEFINAL1_bppAdjust_cmap_NbQLD-hybrid-3racon-1pilon_fasta_NGScontigs_HYBRID_SCAFFOLD.final.fasta";
+//        Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\QLD082\\EXP_REFINEFINAL1_bppAdjust_cmap_NbQLD-hybrid-3racon-1pilon_fasta_NGScontigs_HYBRID_SCAFFOLD.final.hic";
 
+//        Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB\\CNbD.contigs.final.hic";
+          Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.uppercase_FINAL.hic";
+//        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\QLD082\\EXP_REFINEFINAL1_bppAdjust_cmap_NbQLD-hybrid-3racon-1pilon_fasta_NGScontigs_HYBRID_SCAFFOLD.final.fasta";
+//        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB\\CNbD.contigs.final.hic";
+//        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB\\CNbD.contigs.FINAL.fasta";
 //        Assembly_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.final.assembly";
 //        Assembly_fn = "C:\\Jiyuan\\sourceCode\\juicer\\before_bionano\\CNbD.contigs.rawchrom.assembly";
 //        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\before_bionano\\CNbD.contigs.rawchrom.fasta";
+        
+        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.final.fasta";
+        
         pop_jpanel = new JPanel();
         Box vbox1 = Box.createVerticalBox();
         Box hbox01 = Box.createHorizontalBox();
@@ -960,14 +968,17 @@ public class Citrus  extends JFrame {
                 canvas.fasta.clear();
                 while ((line = br.readLine()) != null) {
                     if (line.startsWith(">")) {
-                        canvas.fasta.put(ID, sb.toString());
+                        canvas.fasta.put(ID, new StringBuilder(sb));
+                        System.out.println(ID + " len="+sb.length());
                         sb.setLength(0);
                         ID = line;
                     } else {
                         sb.append(line);
                     }
                 }
-                canvas.fasta.put(ID, sb.toString());
+//                        canvas.fasta.get(">Super-Scaffold_100001").toString().length();
+                canvas.fasta.put(ID, sb);
+                System.out.println(ID + " len="+sb.length());
                 br.close();
             } else {
                 JOptionPane.showMessageDialog(null, fasta_fn+" does not exist");
@@ -1195,87 +1206,84 @@ public class Citrus  extends JFrame {
     void get_sequence_proc(ActionEvent e) {
         BufferedWriter bw = null;
         try {
-            ArrayList<Integer> selected_all_order_no = new ArrayList<>();
-            bw = new BufferedWriter(new FileWriter("tmp.txt"));
-            if (canvas.shift_down) {
-                selected_all_order_no.add(canvas.selected_order);
-            } else if (canvas.ctrl_down) {
-                for (int chr_no : canvas.assembly_chr_order_list.keySet()) {
-                    if (canvas.assembly_chr_order_list.get(chr_no).contains(canvas.selected_order)) {
-                        selected_all_order_no.addAll(canvas.assembly_chr_order_list.get(chr_no));
+            JFileChooser jfc = new JFileChooser();
+            jfc.setFileFilter(new javax.swing.filechooser.FileFilter() {
+                public boolean accept(File f) {
+                    return f.getName().toLowerCase().endsWith(".fasta") || f.isDirectory();
+                }
+
+                public String getDescription() {
+                    return "fasta Files";
+                }
+            });
+            if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                File file = jfc.getSelectedFile();
+                bw = new BufferedWriter(new FileWriter(file.getAbsolutePath()));
+                bw.write(">HiC_scaffold_1\n");
+                ArrayList<Integer> selected_all_order_no = new ArrayList<>();
+                if (canvas.shift_down) {
+                    selected_all_order_no.add(canvas.selected_order);
+                } else if (canvas.ctrl_down) {
+                    for (int chr_no : canvas.assembly_chr_order_list.keySet()) {
+                        if (canvas.assembly_chr_order_list.get(chr_no).contains(canvas.selected_order)) {
+                            selected_all_order_no.addAll(canvas.assembly_chr_order_list.get(chr_no));
+                        }
                     }
                 }
-            }
-            StringBuilder sb = new StringBuilder();
-            for (int order_no : selected_all_order_no) {
+                StringBuilder sb = new StringBuilder();
+                StringBuilder remaining = new StringBuilder();
+                for (int order_no : selected_all_order_no) {
 //                int abs_order = Math.abs(order_no);
-                if (canvas.assembly_order_map.get(order_no) == null) {
-                    pop_jTextArea.setText(order_no + " does not exist");
+                    if (canvas.assembly_order_map.get(order_no) == null) {
+                        pop_jTextArea.setText(order_no + " does not exist");
 //                    pop_jTextArea.setText(canvas.assembly_fragments.get(canvas.selectedFragment).toString().replace(" ", "\n"));
-                    dialog_sequence.setPreferredSize(new Dimension(350, 350));
-                    dialog_sequence.setVisible(true);
-                    return;
-                }
-                String ID = canvas.assembly_order_map.get(order_no).scafold_fragment_subType_ID;
-                String seq = canvas.fasta.get(canvas.assembly_order_map.get(order_no).scafold_fragment_subType_ID);
-                if (sb.length() < 1000) {
-                    sb.append(ID);
-                    sb.append(" ").append(order_no).append("\n");
-                }
-                bw.write(ID + ":" + order_no +" strand:" + canvas.assembly_block_direction.get(order_no) + "\n");
-                if (canvas.assembly_block_direction.get(order_no) > 0) {
+                        dialog_sequence.setPreferredSize(new Dimension(350, 350));
+                        dialog_sequence.setVisible(true);
+                        return;
+                    }
+                    String ID = canvas.assembly_order_map.get(order_no).scafold_fragment_subType_ID;
+                    if (sb.length() < 1000) {
+                        sb.append(ID);
+                        sb.append(" ").append(order_no).append("\n");
+                    }
+//                System.out.println(ID);
+                    int start_pos = canvas.assembly_order_map.get(order_no).start_in_superscaffold;
+                    int stop_pos = start_pos + canvas.assembly_order_map.get(order_no).size_in_superscaffold;
+                    StringBuilder superScaffold_seq = canvas.fasta.get(ID.split(":::")[0]);//superScaffold_seq.length();canvas.fasta.get(">Super-Scaffold_100002").toString().length()
+                    if (superScaffold_seq == null) {
+                        remaining = remaining.append(Strings.repeat("N", stop_pos - start_pos));
+                    } else {
+                        if (canvas.assembly_block_direction.get(order_no) > 0) {
+                            remaining = remaining.append(superScaffold_seq.substring(start_pos, stop_pos));
+                        } else {
+                            StringBuilder tmp = new StringBuilder(superScaffold_seq.substring(start_pos, stop_pos));
+                            tmp = new StringBuilder(tmp.reverse().toString().replace('A', '@').replace('T', 'A').replace('@', 'T').replace('G', '$').replace('C', 'G').replace('$', 'C'));
+                            remaining = remaining.append(tmp);
+                        }
+                    }
+//                bw.write(ID + ":" + order_no +" strand:" + canvas.assembly_block_direction.get(order_no) + "\n");
                     int i = 0;
-                    for (; i < seq.length() - 80; i = i + 80) {
-                        String str = seq.substring(i, i + 80);
+                    for (; i < remaining.length() - 80; i = i + 80) {
+                        String str = remaining.substring(i, i + 80);
                         if (sb.length() < 1000) {
                             sb.append(str).append("\n");
                         }
                         bw.write(str + "\n");
                     }
-                    if (sb.length() < 1000) {
-                        sb.append(seq.substring(i)).append("\n");
-                    }
-                    bw.write(seq.substring(i) + "\n");
-                } else {//reverse
-                    int i = seq.length() - 80;
-                    for (; i > 0; i = i - 80) {
-                        String str = reverseComplement(seq.substring(i, i + 80));
-                        if (sb.length() < 1000) {
-                            sb.append(str).append("\n");
-                        }
-                        bw.write(str + "\n");
-                    }
-                    String str = reverseComplement(seq.substring(0, i + 80));
-                    if (sb.length() < 1000) {
-                        sb.append(str).append("\n");
-                    }
-                    bw.write(str + "\n");
+                    remaining = new StringBuilder(remaining.substring(i));
                 }
-                int i = 0;
-//                        for (; i < seq.length() - 99; i = i + 100) {
-//                            if (sb.length() < 1000) {
-//                                if (order_no > 0) {
-//                                    sb.append(seq.substring(i, i + 100)).append("\n");
-//                                } else {
-//                                    sb.insert(0, seq.substring(i, i + 100).toUpperCase().replace('A', '@').replace('C', '$')
-//                                            .replace('T', 'A').replace('@', 'T').replace('G', 'C').replace('$', 'G'));
-//                                }
-//                            }
-//                            if (order_no > 0) {
-//                                bw.write(seq.substring(i, i + 100)+"\n");
-//                            } else {
-//                                sb.insert(0, seq.substring(i, i + 100).toUpperCase().replace('A', '@').replace('C', '$')
-//                                        .replace('T', 'A').replace('@', 'T').replace('G', 'C').replace('$', 'G'));
-//                            }
-//                        }
-//                        sb.append(seq.substring(i)).append("\n");
+                if (sb.length() < 1000) {
+                    sb.append(remaining).append("\n");
+                }
+                bw.write(remaining + "\n");
+
+                bw.close();
+                pop_jTextArea.setText(sb.toString());
+                //                    pop_jTextArea.setText(canvas.assembly_fragments.get(canvas.selectedFragment).toString().replace(" ", "\n"));
+                dialog_sequence.setPreferredSize(new Dimension(350, 350));
+                dialog_sequence.setVisible(true);
 
             }
-            bw.close();
-            pop_jTextArea.setText(sb.toString());
-            //                    pop_jTextArea.setText(canvas.assembly_fragments.get(canvas.selectedFragment).toString().replace(" ", "\n"));
-            dialog_sequence.setPreferredSize(new Dimension(350, 350));
-            dialog_sequence.setVisible(true);
         } catch (IOException ex) {
             Logger.getLogger(Citrus.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

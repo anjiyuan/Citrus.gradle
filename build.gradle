@@ -5,7 +5,7 @@ apply plugin: 'application'
 
 tasks.withType(JavaExec) {
     jvmArgs = ['-Xms16g']
-    args = ["arg1", "arg26"]
+    args = ["arg1", "arg16"]
         workingDir='C:/Jiyuan/sourceCode/juicer/data'
 }
 

@@ -32,7 +32,7 @@ import javax.swing.JPopupMenu;
 public class Canvas extends JPanel {
 
     Map<Integer, BufferedImage> buffered_images = new TreeMap();
-    TreeMap<String, String> fasta = new TreeMap();
+    TreeMap<String, StringBuilder> fasta = new TreeMap();
     TreeMap<Integer, SupperScaffold> assembly_order_map = new TreeMap();
     TreeMap<Integer, List<Integer>> assembly_chr_order_list = new TreeMap();
     TreeMap<Integer, Integer> assembly_block_direction = new TreeMap<>();
