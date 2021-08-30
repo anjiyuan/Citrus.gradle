@@ -1220,13 +1220,13 @@ public class Citrus  extends JFrame {
                 File file = jfc.getSelectedFile();
                 bw = new BufferedWriter(new FileWriter(file.getAbsolutePath()));
                 String pure_fn = file.getName();
-                String ID;
+                String fasta_ID;
                 if(pure_fn.contains(".")){
-                    ID = ">"+pure_fn.substring(0, pure_fn.lastIndexOf("."));
+                    fasta_ID = ">"+pure_fn.substring(0, pure_fn.lastIndexOf("."));
                 }else{
-                    ID = ">"+pure_fn;
+                    fasta_ID = ">"+pure_fn;
                 }                
-                bw.write(ID+"\n");
+                bw.write(fasta_ID+"\n");
                 ArrayList<Integer> selected_all_order_no = new ArrayList<>();
                 if (canvas.shift_down) {
                     selected_all_order_no.add(canvas.selected_order);
