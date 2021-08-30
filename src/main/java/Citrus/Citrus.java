@@ -1207,11 +1207,11 @@ public class Citrus  extends JFrame {
         BufferedWriter bw = null;
         try {
             JFileChooser jfc = new JFileChooser();
+            jfc.setSelectedFile(new File("HiC_scaffold_1.txt"));
             jfc.setFileFilter(new javax.swing.filechooser.FileFilter() {
                 public boolean accept(File f) {
                     return f.getName().toLowerCase().endsWith(".fasta") || f.isDirectory();
                 }
-
                 public String getDescription() {
                     return "fasta Files";
                 }
@@ -1219,7 +1219,14 @@ public class Citrus  extends JFrame {
             if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 File file = jfc.getSelectedFile();
                 bw = new BufferedWriter(new FileWriter(file.getAbsolutePath()));
-                bw.write(">HiC_scaffold_1\n");
+                String pure_fn = file.getName();
+                String ID;
+                if(pure_fn.contains(".")){
+                    ID = ">"+pure_fn.substring(0, pure_fn.lastIndexOf("."));
+                }else{
+                    ID = ">"+pure_fn;
+                }                
+                bw.write(ID+"\n");
                 ArrayList<Integer> selected_all_order_no = new ArrayList<>();
                 if (canvas.shift_down) {
                     selected_all_order_no.add(canvas.selected_order);
