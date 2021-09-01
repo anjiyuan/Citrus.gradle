@@ -355,29 +355,9 @@ public class Write_HIC {
     
     protected void writeBlock(List<ContactRecord> contactRec_in_one_block) throws IOException {
 
-//        final Map<Point, ContactCount> records = block.getContactRecordMap();//   getContactRecords();
-
-        // System.out.println("Write contact records : records count = " + records.size());
-
-        // Count records first
         int nRecords = contactRec_in_one_block.size();
-//        if (countThreshold > 0) {
-//            nRecords = 0;
-//            for (ContactCount rec : records.values()) {
-//                if (rec.getCounts() >= countThreshold) {
-//                    nRecords++;
-//                }
-//            }
-//        } else {
-//            nRecords = records.size();
-//        }
         BufferedByteWriter buffer = new BufferedByteWriter(nRecords * 12);
         buffer.putInt(nRecords);
-//        synchronized(zd) {
-//            zd.cellCount += nRecords;
-//        }
-
-
         // Find extents of occupied cells
         int binXOffset = Integer.MAX_VALUE;
         int binYOffset = Integer.MAX_VALUE;
@@ -394,20 +374,6 @@ public class Write_HIC {
 
         buffer.putInt(binXOffset);
         buffer.putInt(binYOffset);
-
-//        // Sort keys in row-major order
-//        List<Point> keys = new ArrayList<>(records.keySet());
-//        keys.sort(new Comparator<Point>() {
-//            @Override
-//            public int compare(Point o1, Point o2) {
-//                if (o1.y != o2.y) {
-//                    return o1.y - o2.y;
-//                } else {
-//                    return o1.x - o2.x;
-//                }
-//            }
-//        });
-//        Point lastPoint = keys.get(keys.size() - 1);
         final short w = (short) (binXMax - binXOffset + 1);
         final int w1 = binXMax - binXOffset + 1;
         final int w2 = binYMax - binYOffset + 1;

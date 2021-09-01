@@ -73,7 +73,7 @@ public class Citrus  extends JFrame {
 
     Hic_header HH;
     Map<String, Map<Integer, numContact_X_Y_per_resolution_str>> Hic_data = new TreeMap<>();
-    int max_resolution = 4;//10;
+    int max_resolution = 2;//10;
     JPanel pop_jpanel;
     Canvas canvas;
     x_scale x_axis;
