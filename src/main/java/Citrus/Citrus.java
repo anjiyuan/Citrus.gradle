@@ -73,7 +73,7 @@ public class Citrus  extends JFrame {
 
     Hic_header HH;
     Map<String, Map<Integer, numContact_X_Y_per_resolution_str>> Hic_data = new TreeMap<>();
-    int max_resolution = 13;//10;//0;//10;
+    int max_resolution = 8;//10;//0;//10;
     JPanel pop_jpanel;
     Canvas canvas;
     x_scale x_axis;
@@ -146,11 +146,11 @@ public class Citrus  extends JFrame {
         
         jButton0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton0.enableInputMethods(false);
+                jButton0.setEnabled(false);
                 file_Hic_choice(evt);
 //                file_choice_readIn(evt, Hic_fn_jTextField);
                 repaint();
-                jButton0.enableInputMethods(true);
+                jButton0.setEnabled(true);
             }
         });
         hbox0.add(jButton0);
@@ -1099,13 +1099,20 @@ public class Citrus  extends JFrame {
             DefaultComboBoxModel model = (DefaultComboBoxModel) resolu_combobox.getModel();
             // removing old data
             model.removeAllElements();
-
+            int jcombobox_idx = 0;
             for (int i = 0; (i < HH.bpBinSizes.length) && (i < max_resolution); i++) {
+                if (HH.getChr("assembly").getLength() * 1.0 / HH.bpBinSizes[i] < jScrollPane_size) {
+                    jcombobox_idx = i;
+                }
                 String item = String.format("%,d", HH.bpBinSizes[i]) + " BP";
                 model.addElement(item);
             }
+            
             // setting model with new data
             resolu_combobox.setModel(model);
+            resolu_combobox.setSelectedIndex(jcombobox_idx);
+            resolution = resolu_combobox.getSelectedIndex();
+
 //            write_Hic(0);
         } catch (IOException ex) {
             Logger.getLogger(Citrus.class.getName()).log(Level.SEVERE, null, ex);
