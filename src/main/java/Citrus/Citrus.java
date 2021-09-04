@@ -73,7 +73,7 @@ public class Citrus  extends JFrame {
 
     Hic_header HH;
     Map<String, Map<Integer, numContact_X_Y_per_resolution_str>> Hic_data = new TreeMap<>();
-    int max_resolution = 3;//10;//0;//10;
+    int max_resolution = 13;//10;//0;//10;
     JPanel pop_jpanel;
     Canvas canvas;
     x_scale x_axis;
@@ -129,7 +129,7 @@ public class Citrus  extends JFrame {
 
           Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\LAB_bionano_part6\\LAB_bionano_part.final.hic";
           Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\LAB_bionano_part2\\LAB_bionano_part.final.hic";
-          Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.final.hic";
+//          Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.final.hic";
 //        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\QLD082\\EXP_REFINEFINAL1_bppAdjust_cmap_NbQLD-hybrid-3racon-1pilon_fasta_NGScontigs_HYBRID_SCAFFOLD.final.fasta";
 //        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB\\CNbD.contigs.final.hic";
 //        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB\\CNbD.contigs.FINAL.fasta";
