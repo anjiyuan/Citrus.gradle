@@ -36,7 +36,7 @@ public class Canvas extends JPanel {
     TreeMap<Integer, SupperScaffold> assembly_order_map = new TreeMap();
     TreeMap<Integer, List<Integer>> assembly_chr_order_list = new TreeMap();
     TreeMap<Integer, Integer> assembly_block_direction = new TreeMap<>();
-    long genome_size_assembly;
+//    long genome_size_assembly;
     int selected_order = Integer.MIN_VALUE;
     int selected_order_min_line = -1;
     int selected_order_max_line = -1;
@@ -94,9 +94,9 @@ public class Canvas extends JPanel {
 //        int view_width = view_width_orig * display_resolution;
 //        this.setPreferredSize(new Dimension(view_width + 50, view_width + 50));
     }
-    void set_genome_size_assembly(long genome_size_assembly){
-        this.genome_size_assembly = genome_size_assembly;
-    }
+//    void set_genome_size_assembly(long genome_size_assembly){
+//        this.genome_size_assembly = genome_size_assembly;
+//    }
 
     private void updateColourDistance() {
         int r1 = lowValueColour.getRed();

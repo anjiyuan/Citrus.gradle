@@ -1077,7 +1077,7 @@ public class Citrus  extends JFrame {
         for (int superfold : canvas.assembly_order_map.keySet()) {
             total_genome_size += canvas.assembly_order_map.get(superfold).size_in_superscaffold;
         }
-        double ratio_assembly_Hic = (canvas.genome_size_assembly * 1000L / total_genome_size) / 1000.0;
+        double ratio_assembly_Hic = (HH.getChr("assembly").getLength() * 1000L / total_genome_size) / 1000.0;
         for (int i = 0; i < HH.bpBinSizes.length; i++) {
             HH.bpBinSizes[i] = (int) (HH.bpBinSizes[i] / ratio_assembly_Hic);
         }
@@ -1089,7 +1089,6 @@ public class Citrus  extends JFrame {
             HH = new Hic_header(Hic_fn);
             adjust_bpBinSizes();
             
-            canvas.set_genome_size_assembly(HH.getChr("assembly").getLength());
             Matrix m = new Matrix(Hic_fn, HH.getVersion(), HH.getMasterIndex(), HH.getChromosomes());
             Hic_data.clear();
             for (String key : HH.getMasterIndex().keySet()) {
