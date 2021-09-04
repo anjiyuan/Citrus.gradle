@@ -43,10 +43,8 @@ Citrus/generateGenome.java
  Citrus.generateGenome
 Citrus/Block.java
  Citrus.Block
-Citrus/Canvas.java
- Citrus.Canvas
- Citrus.x_scale
- Citrus.y_scale
+Citrus/SupperScaffold.java
+ Citrus.SupperScaffold
 Citrus/Citrus.java
  Citrus.Citrus
  Citrus.Citrus$1
@@ -63,5 +61,7 @@ Citrus/Citrus.java
  Citrus.Citrus$7
  Citrus.Citrus$8
  Citrus.Citrus$9
-Citrus/SupperScaffold.java
- Citrus.SupperScaffold
+Citrus/Canvas.java
+ Citrus.Canvas
+ Citrus.x_scale
+ Citrus.y_scale

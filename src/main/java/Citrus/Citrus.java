@@ -73,7 +73,7 @@ public class Citrus  extends JFrame {
 
     Hic_header HH;
     Map<String, Map<Integer, numContact_X_Y_per_resolution_str>> Hic_data = new TreeMap<>();
-    int max_resolution = 10;//0;//10;
+    int max_resolution = 10;//10;//0;//10;
     JPanel pop_jpanel;
     Canvas canvas;
     x_scale x_axis;
@@ -292,9 +292,9 @@ public class Citrus  extends JFrame {
         
         int display_resolution = resolution;//Integer.parseInt(resolu.getText());
         canvas = new Canvas(view_size, display_resolution);//, corner_x, corner_y);
-        x_axis = new x_scale();//view_size, display_resolution);
+        x_axis = new x_scale(view_size);//view_size, display_resolution);
         x_axis.setPreferredSize(new Dimension(0,20));
-        y_axis = new y_scale();//view_size, display_resolution);
+        y_axis = new y_scale(view_size);//view_size, display_resolution);
         y_axis.setPreferredSize(new Dimension(20,0));
         canvas.setPreferredSize(new Dimension(view_size + 50, view_size + 50));
         JScrollPane jScrollPane = new JScrollPane();

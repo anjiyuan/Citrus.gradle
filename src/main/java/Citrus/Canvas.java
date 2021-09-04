@@ -345,12 +345,13 @@ class y_scale extends JPanel {
     String chr_chr = "1_1";
     Hic_header HH;
     List<Chromosome> chromosomes;
-    int length;
+    int length = 100;
 
 //    int view_width_orig;
 //    int display_resolution;
 
-    public y_scale() {//int view_width_orig, int display_resolution) {
+    public y_scale(int length) {//int view_width_orig, int display_resolution) {
+        this.length = length;
 //        this.view_width_orig = view_width_orig;
 //        this.display_resolution = display_resolution;
     }
@@ -389,8 +390,8 @@ class y_scale extends JPanel {
             int chr1_no = Integer.parseInt(chr_chr.split("_")[0]);
             int chr2_no = Integer.parseInt(chr_chr.split("_")[1]);
             long max_chr_bp = Math.max(chromosomes.get(chr1_no).getLength(), chromosomes.get(chr2_no).getLength());
-            int num_scales = length / 100;
-            long scale_step = round_scale_step(max_chr_bp / num_scales);
+            double num_scales = length / 100.0;
+            long scale_step = round_scale_step((int)(max_chr_bp / num_scales + 0.5));
             num_scales = (int) (max_chr_bp / scale_step);
             double bp_per_pixel = max_chr_bp / length;//view_width_orig;        
             Graphics2D g2D = (Graphics2D) g;
@@ -460,10 +461,11 @@ class x_scale extends JPanel{
     String chr_chr = "1_1";
     Hic_header HH;
     List<Chromosome> chromosomes;
-    int length;
+    int length = 100;
 //    int view_width_orig;
 //    int display_resolution;
-    public x_scale(){//int view_width_orig, int display_resolution) {
+    public x_scale(int length){//int view_width_orig, int display_resolution) {
+        this.length = length;
 //        this.view_width_orig = view_width_orig;
 //        this.display_resolution = display_resolution;
     }
@@ -495,8 +497,8 @@ class x_scale extends JPanel{
             int chr1_no = Integer.parseInt(chr_chr.split("_")[0]);
             int chr2_no = Integer.parseInt(chr_chr.split("_")[1]);
             long max_chr_bp = Math.max(chromosomes.get(chr1_no).getLength(), chromosomes.get(chr2_no).getLength());
-            int num_scales = length / 100;//10;
-            long scale_step = round_scale_step(max_chr_bp / num_scales);
+            double num_scales = length / 100.0;//10;
+            long scale_step = round_scale_step((int)(max_chr_bp / num_scales + 0.5));
             num_scales = (int) (max_chr_bp / scale_step);
             double bp_per_pixel = max_chr_bp / length;//view_width_orig;        
             Graphics2D g2D = (Graphics2D) g;
