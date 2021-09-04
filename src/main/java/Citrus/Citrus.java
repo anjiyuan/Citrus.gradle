@@ -73,16 +73,16 @@ public class Citrus  extends JFrame {
 
     Hic_header HH;
     Map<String, Map<Integer, numContact_X_Y_per_resolution_str>> Hic_data = new TreeMap<>();
-    int max_resolution = 2;//10;
+    int max_resolution = 10;//0;//10;
     JPanel pop_jpanel;
     Canvas canvas;
     x_scale x_axis;
     y_scale y_axis;
     int view_size = 3600;
-    static int win_size = 1200;
+    static int jScrollPane_size = 800;
     int resolution = 0;
     double color_range_slide_value = 0.005;
-    JTextField region, Hic_fn_jTextField, fasta_fn_jTextField;//, Assembly_fn_jTextField;
+    JTextField region, Hic_fn_jTextField;//, fasta_fn_jTextField;//, Assembly_fn_jTextField;
     String dir = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\";
     String Hic_fn, Assembly_fn, fasta_fn;
     String chr_chr = "1_1";
@@ -95,23 +95,23 @@ public class Citrus  extends JFrame {
 //    JButton jButton01 = new JButton("open assembly file");
     JButton jButton02 = new JButton("open fasta file");
 
-    private JPanel jpnlColumn = new JPanel();
-    private JPanel jpnlRow = new JPanel();
-    private JPanel jpnlContent = new JPanel();    
-    Dimension dim = new Dimension(win_size, win_size);
+//    private JPanel jpnlColumn = new JPanel();
+//    private JPanel jpnlRow = new JPanel();
+//    private JPanel jpnlContent = new JPanel();    
+//    Dimension dim = new Dimension(win_size, win_size);
 
     Stack<History> history = new Stack<>(); 
 
-    public Citrus(int win_size) throws IOException {//, int corner_x, int corner_y) {
+    public Citrus() throws IOException {//, int corner_x, int corner_y) {
 //        this.canvasSize= new Dimension(canvasSize);
-        this.win_size = win_size;
+//        this.win_size = win_size;
         componentinit();
     }
     
     public static void main(String[] args) throws IOException {
-        JFrame frame = new Citrus(win_size);
+        JFrame frame = new Citrus();
         frame.setTitle("Citrus");
-        frame.setSize(new Dimension(win_size + 100, win_size + 100));
+        frame.setSize(new Dimension(jScrollPane_size + 50, jScrollPane_size+150));
         frame.setVisible(true);
     }
     
@@ -127,6 +127,9 @@ public class Citrus  extends JFrame {
 
 //        Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB\\CNbD.contigs.final.hic";
           Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.uppercase_FINAL.hic";
+
+          Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\LAB_bionano_part6\\LAB_bionano_part.final.hic";
+          Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\LAB_bionano_part2\\LAB_bionano_part.final.hic";
 //        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\QLD082\\EXP_REFINEFINAL1_bppAdjust_cmap_NbQLD-hybrid-3racon-1pilon_fasta_NGScontigs_HYBRID_SCAFFOLD.final.fasta";
 //        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB\\CNbD.contigs.final.hic";
 //        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB\\CNbD.contigs.FINAL.fasta";
@@ -135,7 +138,7 @@ public class Citrus  extends JFrame {
 //        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\before_bionano\\CNbD.contigs.rawchrom.fasta";
         
         fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.final.fasta";
-        
+        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\LAB_bionano_part2\\LAB_bionano_part.final.fasta";
         pop_jpanel = new JPanel();
         Box vbox1 = Box.createVerticalBox();
         Box hbox01 = Box.createHorizontalBox();
@@ -191,19 +194,19 @@ public class Citrus  extends JFrame {
 //
         vbox1.add(Box.createVerticalStrut(3));
         vbox1.add(hbox01);
-        Box hbox02 = Box.createHorizontalBox();
-        jButton02.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-//               file_fasta_choice(evt); 
-                file_choice_readIn(evt, fasta_fn_jTextField);
-            }
-        });
-        hbox02.add(jButton02);
-        fasta_fn_jTextField = new JTextField(fasta_fn);
-        hbox02.add(Box.createHorizontalStrut(5));
-        hbox02.add(fasta_fn_jTextField);
-        vbox1.add(Box.createVerticalStrut(3));
-        vbox1.add(hbox02);
+//        Box hbox02 = Box.createHorizontalBox();
+//        jButton02.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+////               file_fasta_choice(evt); 
+//                file_choice_readIn(evt, fasta_fn_jTextField);
+//            }
+//        });
+//        hbox02.add(jButton02);
+//        fasta_fn_jTextField = new JTextField(fasta_fn);
+//        hbox02.add(Box.createHorizontalStrut(5));
+//        hbox02.add(fasta_fn_jTextField);
+//        vbox1.add(Box.createVerticalStrut(3));
+//        vbox1.add(hbox02);
 
         
         Box hbox1 = Box.createHorizontalBox();
@@ -295,7 +298,7 @@ public class Citrus  extends JFrame {
         y_axis.setPreferredSize(new Dimension(20,0));
         canvas.setPreferredSize(new Dimension(view_size + 50, view_size + 50));
         JScrollPane jScrollPane = new JScrollPane();
-        jScrollPane.setPreferredSize(new Dimension(win_size, win_size - 250));
+        jScrollPane.setPreferredSize(new Dimension(jScrollPane_size, jScrollPane_size));
         
 
 //         jpnlContent.setLayout(new GridBagLayout());
@@ -959,7 +962,7 @@ public class Citrus  extends JFrame {
     private void readIn_Fasta(){
         try {
             String hic_fn = Hic_fn_jTextField.getText();
-            fasta_fn = fasta_fn_jTextField.getText();// hic_fn.substring(0, hic_fn.lastIndexOf(".")) + ".fasta";
+            fasta_fn = hic_fn.substring(0, hic_fn.lastIndexOf(".")) + ".fasta";
             if (new File(fasta_fn).exists()) {
                 BufferedReader br = new BufferedReader(new FileReader(fasta_fn));
                 String line = br.readLine();
@@ -1057,7 +1060,7 @@ public class Citrus  extends JFrame {
     }
     
     private long pix2Genome(int pis_pos){
-        return (pis_pos - canvas.MARGIN) * canvas.scale * 2L;
+        return (pis_pos - canvas.MARGIN) * canvas.scale * 1L;
     }
     
     private void readIn_Hic(){
@@ -1827,11 +1830,11 @@ public class Citrus  extends JFrame {
 //            double selected_size_double = canvas.assembly_order_map.get(selected_order).size_in_superscaffold / (scale * 2.0);
             double insert_double;// = canvas.assembly_order_map.get((insert_candidate_order_no)).genome_position / (scale * 2.0);
             if (insert_candidate_order_no < Integer.MAX_VALUE) {
-                insert_double = canvas.assembly_order_map.get(insert_candidate_order_no).genome_position / (scale * 2.0);
+                insert_double = canvas.assembly_order_map.get(insert_candidate_order_no).genome_position / (scale * 1.0);
             } else {
                 long pos = canvas.assembly_order_map.get(canvas.assembly_order_map.lastKey()).genome_position
                         + canvas.assembly_order_map.get(canvas.assembly_order_map.lastKey()).size_in_superscaffold;
-                insert_double = pos / (scale * 2.0) + 1;
+                insert_double = pos / (scale * 1.0) + 1;
             }
 //            int selected_min_pix_no = canvas.selected_order_min_line;// canvas.MARGIN + (int) (selected_min_pix_no_double + 0.5);
 //            int selected_max_pix_no = canvas.selected_order_max_line;//selected_min_pix_no + (int) (selected_size_double + 0.5);

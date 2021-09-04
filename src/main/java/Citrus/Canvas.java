@@ -194,8 +194,8 @@ public class Canvas extends JPanel {
             if (assembly_chr_order_list.get(chr_no).contains(selected_order)) {
                 SupperScaffold first = assembly_order_map.get((assembly_chr_order_list.get(chr_no).get(0)));
                 SupperScaffold last = assembly_order_map.get((assembly_chr_order_list.get(chr_no).get(assembly_chr_order_list.get(chr_no).size() - 1)));
-                int selected_order_min_line1 = MARGIN + (int) (first.genome_position / (local_scale * 2.0) + 0.5);
-                int selected_order_max_line1 = MARGIN + (int) ((last.genome_position + last.size_in_superscaffold) / (local_scale * 2.0) + 0.5);
+                int selected_order_min_line1 = MARGIN + (int) (first.genome_position / (local_scale * 1.0) + 0.5);
+                int selected_order_max_line1 = MARGIN + (int) ((last.genome_position + last.size_in_superscaffold) / (local_scale * 1.0) + 0.5);
                 return new Point(selected_order_min_line1, selected_order_max_line1);
             }
         }
@@ -208,11 +208,11 @@ public class Canvas extends JPanel {
         for (int removed_chr_no : fragments_moved.keySet()) {
             for (int order : fragments_moved.get(removed_chr_no)) {
                 SupperScaffold ss = assembly_order_map.get(order);
-                int min = MARGIN + (int) (ss.genome_position / (local_scale * 2.0) + 0.5);
+                int min = MARGIN + (int) (ss.genome_position / (local_scale * 1.0) + 0.5);
                 if (min < selected_order_min_line1) {
                     selected_order_min_line1 = min;
                 }
-                int max = MARGIN + (int) ((ss.genome_position + ss.size_in_superscaffold) / (local_scale * 2.0) + 0.5);
+                int max = MARGIN + (int) ((ss.genome_position + ss.size_in_superscaffold) / (local_scale * 1.0) + 0.5);
                 if (max > selected_order_max_line1) {
                     selected_order_max_line1 = max;
                 }
@@ -240,14 +240,14 @@ public class Canvas extends JPanel {
     
     Point get_fragment_min_max(int selected_order, int local_scale) {
         SupperScaffold selectSuperscafforld = assembly_order_map.get((selected_order));
-        int selected_order_min_line1 = MARGIN + (int) (selectSuperscafforld.genome_position / (local_scale * 2.0) + 0.5);
-        int selected_order_max_line1 = MARGIN + (int) ((selectSuperscafforld.genome_position + selectSuperscafforld.size_in_superscaffold) / (local_scale * 2.0) + 0.5);
+        int selected_order_min_line1 = MARGIN + (int) (selectSuperscafforld.genome_position / (local_scale * 1.0) + 0.5);
+        int selected_order_max_line1 = MARGIN + (int) ((selectSuperscafforld.genome_position + selectSuperscafforld.size_in_superscaffold) / (local_scale * 1.0) + 0.5);
         return new Point(selected_order_min_line1, selected_order_max_line1);
     }
 
     void set_selected_order(Point p){
-        long x = (p.x - MARGIN) * scale * 2L;
-        long y = (p.y - MARGIN) * scale * 2L;        
+        long x = (p.x - MARGIN) * scale * 1L;
+        long y = (p.y - MARGIN) * scale * 1L;        
         for(int order_no : assembly_order_map.keySet()){
 //            int order_no_abs = Math.abs(order_no);
             SupperScaffold sc = assembly_order_map.get(order_no);
@@ -276,15 +276,16 @@ public class Canvas extends JPanel {
                 SupperScaffold sc = assembly_order_map.get(order_no);
                 sc.genome_position = offset;
 //                int pos = offset + sc.start / scale;
-                sc.display_start = (int) (offset / (scale * 2.0) + 0.5);
-                sc.display_size = (int)(sc.size_in_superscaffold / (scale * 2.0) + 0.5);
+                sc.display_start = (int) (offset / (scale * 1.0) + 0.5);
+                sc.display_size = (int)(sc.size_in_superscaffold / (scale * 1.0) + 0.5);
 //                System.out.println(order_no + " "+sc.display_start+" "+sc.display_size);
                 g2D.drawRect(MARGIN+sc.display_start, MARGIN+sc.display_start, sc.display_size, sc.display_size);
                 offset += sc.size_in_superscaffold;
                 chr_size += sc.size_in_superscaffold;
             }
             g2D.setColor(Color.blue);
-            g2D.drawRect(MARGIN + (int) ((offset - chr_size) / scale / 2), MARGIN + (int) ((offset - chr_size) / scale / 2), chr_size / scale / 2, chr_size / scale / 2);
+            g2D.drawRect(MARGIN + (int) ((offset - chr_size) / scale), MARGIN + (int) ((offset - chr_size) / scale), chr_size / scale, chr_size / scale);
+//            g2D.drawRect(MARGIN + (int) ((offset - chr_size) / scale / 2), MARGIN + (int) ((offset - chr_size) / scale / 2), chr_size / scale / 2, chr_size / scale / 2);
         }
         g2D.setStroke(ss);
     }
@@ -412,11 +413,11 @@ class y_scale extends JPanel {
             for (int i = 0; i <= num_scales; i++) {
                 String scale_str;
                 if (scale > 1000000) {
-                    scale_str = 2 * scale / 1000000 + "M";
+                    scale_str = (scale * 1) / 1000000 + "M";
                 } else if (scale > 1000) {
-                    scale_str = 2 * scale / 1000 + "K";
+                    scale_str = (scale * 1) / 1000 + "K";
                 } else {
-                    scale_str = Long.toString(2 * scale);
+                    scale_str = Long.toString((scale * 1));
                 }
 //                g2D.drawString(scale_str, (int) (scale / bp_per_pixel) - g2D.getFontMetrics().stringWidth(scale_str) / 2, 12);
 //                g2D.drawLine((int) (scale / bp_per_pixel), 15, (int) (scale / bp_per_pixel), 20);
@@ -514,11 +515,11 @@ class x_scale extends JPanel{
             for (int i = 0; i <= num_scales; i++) {
                 String scale_str;
                 if (scale > 1000000) {
-                    scale_str = 2 * scale / 1000000 + "M";
+                    scale_str = (scale * 1) / 1000000 + "M";
                 } else if (scale > 1000) {
-                    scale_str = 2 * scale / 1000 + "K";
+                    scale_str = (scale * 1) / 1000 + "K";
                 } else {
-                    scale_str = Long.toString(2 * scale);
+                    scale_str = Long.toString((scale * 1));
                 }
                 if (scale > 0) {
                     g2D.drawString(scale_str, (int) (scale / bp_per_pixel) - g2D.getFontMetrics().stringWidth(scale_str) / 2, 12);
