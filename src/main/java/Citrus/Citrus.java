@@ -299,50 +299,15 @@ public class Citrus  extends JFrame {
         canvas.setPreferredSize(new Dimension(view_size + 50, view_size + 50));
         JScrollPane jScrollPane = new JScrollPane();
         jScrollPane.setPreferredSize(new Dimension(jScrollPane_size, jScrollPane_size));
-        
-
-//         jpnlContent.setLayout(new GridBagLayout());
-//        jpnlColumn.setLayout(new GridBagLayout());
-//        jpnlRow.setLayout(new GridBagLayout());
-//        int total = 10;
-//        List<JLabel> colList = getLabelList(total);
-//        List<JLabel> rowList = getLabelList(total);
-//        JLabel lbl = null;
-//        for (int i = 0; i < total; i++) {
-//            lbl = colList.get(i);
-//            jpnlColumn.add(lbl, new GridBagConstraints(i, 0, 1, 1, 0, 0,
-//                    GridBagConstraints.EAST, GridBagConstraints.NONE,
-//                    new Insets(0, 0, 0, 0), 0, 0));
-//
-//            lbl = rowList.get(i);
-//            jpnlRow.add(lbl, new GridBagConstraints(0, i, 1, 1, 0, 0,
-//                    GridBagConstraints.NORTH, GridBagConstraints.NONE,
-//                    new Insets(0, 0, 0, 0), 0, 0));
-//        }
         jScrollPane.getViewport().add(canvas);
-
         JViewport colVP = new JViewport();
         colVP.setView(x_axis);//jpnlColumn);
-//        colVP.setPreferredSize(new Dimension(1300,10));
         jScrollPane.setColumnHeader(colVP);
-
         JViewport rowVP = new JViewport();
         rowVP.setView(y_axis);//jpnlRow);
-//        rowVP.setPreferredSize(new Dimension(10,1300));
         jScrollPane.setRowHeader(rowVP);
-//
-//        JLabel title = getLabel("Title");
-//        jScrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, title);
-//        jScrollPane.setCorner(JScrollPane.LOWER_LEFT_CORNER, getLabel("****"));
-//        jScrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER, getLabel("**"));
-
-  
-        
         this.getContentPane().add(jScrollPane);
-        
-//        jScrollPane.setViewportView(canvas);
         canvas.setAutoscrolls(true);
-        
         MouseAdapter ma = getMouseAdapter();
         canvas.addMouseListener(ma);
         canvas.addMouseMotionListener(ma);
@@ -355,7 +320,48 @@ public class Citrus  extends JFrame {
         readIn_Fasta();
         create_popup_menu();
         repaint();
-//        chk_size_fasta_assembly();
+    }
+
+    @Override
+    public void repaint() {
+//        this.display_resolution = display_resolution;
+//        this.view_width_orig = view_width_orig;
+//        int view_width = view_width_orig * display_resolution;
+//        canvas.setPreferredSize(new Dimension(view_width + 50, view_width + 50));
+        
+//        int resolution = Integer.parseInt(resolu.getText());
+        double display_color_range = color_range_slide_value;// Double.parseDouble(color_range.getText());
+        int canvas_width = Hic_data.get(chr_chr).get(resolution).blockBinCount *  Hic_data.get(chr_chr).get(resolution).blockColumnCount + 10;
+        canvas.setSize(new Dimension(canvas_width + 0, canvas_width + 0));x_axis.getWidth();
+        x_axis.setSize(new Dimension(canvas_width + 0, 20));
+        y_axis.setSize(new Dimension(20, canvas_width + 0));
+        
+        canvas.setPreferredSize(new Dimension(canvas_width + 0, canvas_width + 0));x_axis.getWidth();
+        x_axis.setPreferredSize(new Dimension(canvas_width + 0, 20));
+        y_axis.setPreferredSize(new Dimension(20, canvas_width + 0));
+        
+        canvas.buffered_images.clear();
+//int  fuck=Hic_data.get(chr_chr).get(1).contactRec_per_block.get(4).get(245071).binX;
+//contactRec_per_block.get(block_no).get(idx_X).binX
+        try {
+            for (int block_no :  Hic_data.get(chr_chr).get(resolution).contactRec_per_block.keySet()){
+                numContact_X_Y_per_resolution_str blocks_per_resolution = Hic_data.get(chr_chr).get(resolution);
+                canvas.buffered_images.put(block_no, new MyBufferedImage(HH, blocks_per_resolution, Hic_data.get(chr_chr).get(resolution).blockColumnCount, block_no, resolution, display_color_range, view_size, Hic_fn));
+            }
+//            canvas.buffered_image = new MyBufferedImage(HH, Hic_data.get(chr_chr), resolution, display_color_range, view_size, Hic_fn);
+        } catch (IOException ex) {
+            Logger.getLogger(Citrus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        canvas.set_display_resolution(resolution);//Integer.parseInt(resolu.getText()));
+        canvas.set_display_scale(HH.bpBinSizes[resolution]);//Integer.parseInt(resolu.getText())]);
+        canvas.set_display_color_range(color_range_slide_value);//Double.parseDouble(color_range.getText()));
+        canvas.repaint();
+        x_axis.set_HH(HH);
+        x_axis.repaint();
+//        y_axis.set_display_resolution(Integer.parseInt(resolu.getText()));
+        y_axis.repaint();
+        y_axis.set_HH(HH);
+        pop_jpanel.repaint();
     }
 
 //    void chk_size_fasta_assembly() {
@@ -1088,38 +1094,6 @@ public class Citrus  extends JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Citrus.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    @Override
-    public void repaint() {
-//        int resolution = Integer.parseInt(resolu.getText());
-        double display_color_range = color_range_slide_value;// Double.parseDouble(color_range.getText());
-        int canvas_width = Hic_data.get(chr_chr).get(resolution).blockBinCount *  Hic_data.get(chr_chr).get(resolution).blockColumnCount + 10;
-        canvas.setPreferredSize(new Dimension(canvas_width + 0, canvas_width + 0));
-        x_axis.setPreferredSize(new Dimension(canvas_width + 0, 20));
-        y_axis.setPreferredSize(new Dimension(20, canvas_width + 0));
-        canvas.buffered_images.clear();
-//int  fuck=Hic_data.get(chr_chr).get(1).contactRec_per_block.get(4).get(245071).binX;
-//contactRec_per_block.get(block_no).get(idx_X).binX
-        try {
-            for (int block_no :  Hic_data.get(chr_chr).get(resolution).contactRec_per_block.keySet()){
-                numContact_X_Y_per_resolution_str blocks_per_resolution = Hic_data.get(chr_chr).get(resolution);
-                canvas.buffered_images.put(block_no, new MyBufferedImage(HH, blocks_per_resolution, Hic_data.get(chr_chr).get(resolution).blockColumnCount, block_no, resolution, display_color_range, view_size, Hic_fn));
-            }
-//            canvas.buffered_image = new MyBufferedImage(HH, Hic_data.get(chr_chr), resolution, display_color_range, view_size, Hic_fn);
-        } catch (IOException ex) {
-            Logger.getLogger(Citrus.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        canvas.set_display_resolution(resolution);//Integer.parseInt(resolu.getText()));
-        canvas.set_display_scale(HH.bpBinSizes[resolution]);//Integer.parseInt(resolu.getText())]);
-        canvas.set_display_color_range(color_range_slide_value);//Double.parseDouble(color_range.getText()));
-        canvas.repaint();
-        x_axis.set_HH(HH);
-        x_axis.repaint();
-//        y_axis.set_display_resolution(Integer.parseInt(resolu.getText()));
-        y_axis.repaint();
-        y_axis.set_HH(HH);
-        pop_jpanel.repaint();
     }
 
     void changeColor() {

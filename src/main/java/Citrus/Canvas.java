@@ -84,22 +84,8 @@ public class Canvas extends JPanel {
     public Canvas(int view_width_orig, int display_resolution) throws IOException {
         this.display_resolution = display_resolution;
         this.view_width_orig = view_width_orig;
-        int view_width = view_width_orig * display_resolution;
-        this.setPreferredSize(new Dimension(view_width + 50, view_width + 50));
-//        Hic_header hh = new Hic_header(Hic_fn);
-//        chromosomes = hh.getChromosomes();
-//        bpBinSizes = hh.getBpBinSizes();
-////        whole_genome_size = 0;
-////        for(Chromosome chr : chromosomes){
-////            whole_genome_size += chr.getLength();
-////        }
-//        Matrix m = new Matrix(Hic_fn, hh.getVersion(), hh.getMasterIndex(), hh.getChromosomes());
-//        for (String key : hh.getMasterIndex().keySet()) {
-//            Map<Integer, numContact_X_Y_per_resolution_str> ret = m.readMatrix(key, max_resolution);
-//            Hic_data.put(key, ret);
-//        }
-//        m.close();
-////        updateColourDistance();
+//        int view_width = view_width_orig * display_resolution;
+//        this.setPreferredSize(new Dimension(view_width + 50, view_width + 50));
     }
 
     private void updateColourDistance() {
@@ -359,6 +345,7 @@ class y_scale extends JPanel {
     String chr_chr = "1_1";
     Hic_header HH;
     List<Chromosome> chromosomes;
+    int length;
 
 //    int view_width_orig;
 //    int display_resolution;
@@ -366,6 +353,10 @@ class y_scale extends JPanel {
     public y_scale() {//int view_width_orig, int display_resolution) {
 //        this.view_width_orig = view_width_orig;
 //        this.display_resolution = display_resolution;
+    }
+    
+    void setLength(int length){
+        this.length = length;
     }
     public void set_HH(Hic_header HH){
         this.HH = HH;
@@ -394,17 +385,17 @@ class y_scale extends JPanel {
 //        }
         
         if (HH != null) {
-            int view_height = this.getHeight();//view_width_orig * display_resolution;
+//            int view_height = this.getHeight();//view_width_orig * display_resolution;
             int chr1_no = Integer.parseInt(chr_chr.split("_")[0]);
             int chr2_no = Integer.parseInt(chr_chr.split("_")[1]);
             long max_chr_bp = Math.max(chromosomes.get(chr1_no).getLength(), chromosomes.get(chr2_no).getLength());
-            int num_scales = view_height / 100;
+            int num_scales = length / 100;
             long scale_step = round_scale_step(max_chr_bp / num_scales);
             num_scales = (int) (max_chr_bp / scale_step);
-            double bp_per_pixel = max_chr_bp / view_height;//view_width_orig;        
+            double bp_per_pixel = max_chr_bp / length;//view_width_orig;        
             Graphics2D g2D = (Graphics2D) g;
 //            int pos_axis = 0;//MARGIN - 1;
-            g2D.drawLine(19, 0, 19, view_height);//X line
+            g2D.drawLine(19, 0, 19, length);//X line
 //        g2D.drawLine(pos_axis, pos_axis, pos_axis, view_width + pos_axis);//Y line?
             long scale = 0;
 
@@ -427,7 +418,7 @@ class y_scale extends JPanel {
                 g2D.drawLine(15, (int) (scale / bp_per_pixel), 20, (int) (scale / bp_per_pixel));
                 scale += scale_step;
             }
-            g2D.drawLine(15, view_height, 20, view_height);//orig X
+            g2D.drawLine(15, length, 20, length);//orig X
 //        g2D.drawLine(pos_axis - 5, view_width + pos_axis, pos_axis, view_width + pos_axis);//orig Y
 
         }
@@ -469,11 +460,15 @@ class x_scale extends JPanel{
     String chr_chr = "1_1";
     Hic_header HH;
     List<Chromosome> chromosomes;
+    int length;
 //    int view_width_orig;
 //    int display_resolution;
     public x_scale(){//int view_width_orig, int display_resolution) {
 //        this.view_width_orig = view_width_orig;
 //        this.display_resolution = display_resolution;
+    }
+    void setLength(int length){
+        this.length = length;
     }
     public void set_HH(Hic_header HH){
         this.HH = HH;
@@ -496,17 +491,17 @@ class x_scale extends JPanel{
 //            g.drawString("B"+Integer.toString(i), i, 10);
 //        }
         if (HH != null) {
-            int view_width = this.getWidth();//view_width_orig * display_resolution;
+//            int view_width = this.getWidth();//view_width_orig * display_resolution;
             int chr1_no = Integer.parseInt(chr_chr.split("_")[0]);
             int chr2_no = Integer.parseInt(chr_chr.split("_")[1]);
             long max_chr_bp = Math.max(chromosomes.get(chr1_no).getLength(), chromosomes.get(chr2_no).getLength());
-            int num_scales = view_width / 100;//10;
+            int num_scales = length / 100;//10;
             long scale_step = round_scale_step(max_chr_bp / num_scales);
             num_scales = (int) (max_chr_bp / scale_step);
-            double bp_per_pixel = max_chr_bp / view_width;//view_width_orig;        
+            double bp_per_pixel = max_chr_bp / length;//view_width_orig;        
             Graphics2D g2D = (Graphics2D) g;
 //            int pos_axis = 0;//MARGIN - 1;
-            g2D.drawLine(0, 19, view_width, 19);//X line
+            g2D.drawLine(0, 19, length, 19);//X line
 //        g2D.drawLine(pos_axis, pos_axis, pos_axis, view_width + pos_axis);//Y line?
             long scale = 0;
 
