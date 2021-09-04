@@ -36,6 +36,7 @@ public class Canvas extends JPanel {
     TreeMap<Integer, SupperScaffold> assembly_order_map = new TreeMap();
     TreeMap<Integer, List<Integer>> assembly_chr_order_list = new TreeMap();
     TreeMap<Integer, Integer> assembly_block_direction = new TreeMap<>();
+    long genome_size_assembly;
     int selected_order = Integer.MIN_VALUE;
     int selected_order_min_line = -1;
     int selected_order_max_line = -1;
@@ -43,7 +44,7 @@ public class Canvas extends JPanel {
     boolean ctrl_down = false;
     boolean shift_down = false;
     int MARGIN = 0;
-    int scale = 0;
+    int bpBinSize = 0;
     int view_width_orig;
     int display_resolution = 0;
     double display_color_range = 0.5;
@@ -66,9 +67,15 @@ public class Canvas extends JPanel {
     public void set_display_resolution(int display_resolution){
         this.display_resolution = display_resolution;
     }
-    
-    public void set_display_scale(int scale){
-        this.scale = scale;
+
+    public void set_display_scale(int bpBinSize) {
+        this.bpBinSize = bpBinSize;
+//        long total_genome_size = 0;
+//        for (int superfold : assembly_order_map.keySet()) {
+//            total_genome_size += assembly_order_map.get(superfold).size_in_superscaffold;
+//        }
+//        double ratio_assembly_Hic = (genome_size_assembly * 1000L / total_genome_size) / 1000.0;
+//        this.bpBinSize = (int)(bpBinSize / ratio_assembly_Hic);
     }
 
     public void set_display_color_range(double display_color_range){
@@ -86,6 +93,9 @@ public class Canvas extends JPanel {
         this.view_width_orig = view_width_orig;
 //        int view_width = view_width_orig * display_resolution;
 //        this.setPreferredSize(new Dimension(view_width + 50, view_width + 50));
+    }
+    void set_genome_size_assembly(long genome_size_assembly){
+        this.genome_size_assembly = genome_size_assembly;
     }
 
     private void updateColourDistance() {
@@ -136,7 +146,7 @@ public class Canvas extends JPanel {
                 image_center_y -= half_block_len;
             }
         }
-        if (scale != 0) {
+        if (bpBinSize != 0) {
             draw_assembly(g2D);
         }
         if (selected_order > Integer.MIN_VALUE) {
@@ -144,14 +154,14 @@ public class Canvas extends JPanel {
             g2D.setStroke(new BasicStroke(2));
 //            int mind = -1, max = -1;
             if (shift_down) {
-                Point p = get_fragment_min_max(selected_order, scale);
+                Point p = get_fragment_min_max(selected_order, bpBinSize);
                 selected_order_min_line = p.x;
                 selected_order_max_line = p.y;
 //                SupperScaffold selectSuperscafforld = assembly_order_map.get((selected_order));
 //                selected_order_min_line = MARGIN+(int) (selectSuperscafforld.genome_position / (scale * 2.0) + 0.5);
 //                selected_order_max_line = MARGIN+(int) ((selectSuperscafforld.genome_position + selectSuperscafforld.size_in_superscaffold) / (scale * 2.0) + 0.5);
             } else if (ctrl_down) {
-                Point p = get_chr_min_max(selected_order, scale);
+                Point p = get_chr_min_max(selected_order, bpBinSize);
                 selected_order_min_line = p.x;
                 selected_order_max_line = p.y;
 //                for (int chr_no : assembly_chr_order_list.keySet()){
@@ -232,8 +242,8 @@ public class Canvas extends JPanel {
     }
 
     void set_selected_order(Point p){
-        long x = (p.x - MARGIN) * scale * 1L;
-        long y = (p.y - MARGIN) * scale * 1L;        
+        long x = (p.x - MARGIN) * bpBinSize * 1L;
+        long y = (p.y - MARGIN) * bpBinSize * 1L;        
         for(int order_no : assembly_order_map.keySet()){
 //            int order_no_abs = Math.abs(order_no);
             SupperScaffold sc = assembly_order_map.get(order_no);
@@ -254,6 +264,14 @@ public class Canvas extends JPanel {
         long offset = 0;
         Stroke ss = g2D.getStroke();
         g2D.setStroke(new BasicStroke(2));
+        
+//                for (int superfold : canvas.assembly_order_map.keySet()) {
+//                    canvas.assembly_order_map.get(superfold).display_size *= HH.getChr("assembly").getLength() / total_genome_size;
+//                    canvas.assembly_order_map.get(superfold).display_start *= HH.getChr("assembly").getLength() / total_genome_size;
+//                }
+        
+        
+        
         for(int chr_no : assembly_chr_order_list.keySet()){
             List<Integer> order_per_chr = assembly_chr_order_list.get(chr_no);
             g2D.setColor(Color.green);
@@ -262,15 +280,15 @@ public class Canvas extends JPanel {
                 SupperScaffold sc = assembly_order_map.get(order_no);
                 sc.genome_position = offset;
 //                int pos = offset + sc.start / scale;
-                sc.display_start = (int) (offset / (scale * 1.0) + 0.5);
-                sc.display_size = (int)(sc.size_in_superscaffold / (scale * 1.0) + 0.5);
+                sc.display_start = (int) (offset / (bpBinSize * 1.0) + 0.5);
+                sc.display_size = (int)(sc.size_in_superscaffold / (bpBinSize * 1.0) + 0.5);
 //                System.out.println(order_no + " "+sc.display_start+" "+sc.display_size);
                 g2D.drawRect(MARGIN+sc.display_start, MARGIN+sc.display_start, sc.display_size, sc.display_size);
                 offset += sc.size_in_superscaffold;
                 chr_size += sc.size_in_superscaffold;
             }
             g2D.setColor(Color.blue);
-            g2D.drawRect(MARGIN + (int) ((offset - chr_size) / scale), MARGIN + (int) ((offset - chr_size) / scale), chr_size / scale, chr_size / scale);
+            g2D.drawRect(MARGIN + (int) ((offset - chr_size) / bpBinSize), MARGIN + (int) ((offset - chr_size) / bpBinSize), chr_size / bpBinSize, chr_size / bpBinSize);
 //            g2D.drawRect(MARGIN + (int) ((offset - chr_size) / scale / 2), MARGIN + (int) ((offset - chr_size) / scale / 2), chr_size / scale / 2, chr_size / scale / 2);
         }
         g2D.setStroke(ss);

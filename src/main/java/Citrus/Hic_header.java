@@ -39,6 +39,7 @@ public class Hic_header {
     int[] site;
     private long normVectorFilePosition;
 
+    
     public Hic_header(String Hic_fn) throws IOException {
         FileInputStream fin = new FileInputStream(Hic_fn);
         DataInputStream dis = new DataInputStream(fin);
@@ -184,6 +185,15 @@ public class Hic_header {
 
     public Map<String, IndexEntry> getMasterIndex() {
         return masterIndex;
+    }
+
+    Chromosome getChr(String chr){
+        for(Chromosome chrom : chromosomes){
+            if(chrom.getName().equals(chr)){
+                return chrom;
+            }
+        }
+        return null;
     }
 
     public List<Chromosome> getChromosomes() {

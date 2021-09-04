@@ -73,7 +73,7 @@ public class Citrus  extends JFrame {
 
     Hic_header HH;
     Map<String, Map<Integer, numContact_X_Y_per_resolution_str>> Hic_data = new TreeMap<>();
-    int max_resolution = 10;//10;//0;//10;
+    int max_resolution = 3;//10;//0;//10;
     JPanel pop_jpanel;
     Canvas canvas;
     x_scale x_axis;
@@ -93,7 +93,7 @@ public class Citrus  extends JFrame {
     JTextArea pop_jTextArea = new JTextArea();
     JButton jButton0 = new JButton("open HiC file");
 //    JButton jButton01 = new JButton("open assembly file");
-    JButton jButton02 = new JButton("open fasta file");
+//    JButton jButton02 = new JButton("open fasta file");
 
 //    private JPanel jpnlColumn = new JPanel();
 //    private JPanel jpnlRow = new JPanel();
@@ -119,7 +119,6 @@ public class Citrus  extends JFrame {
         Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\dat\\inter.hic";
         Hic_fn = "C:\\\\Jiyuan\\\\sourceCode\\\\juicer\\\\data\\\\juicer\\\\juicer\\\\Mod_EXP_REFINEFINAL1_bppAdjust_cmap_NbF1AP_1stpass_fasta_NGScontigs_HYBRID_SCAFFOLD.final.hic";   
 //        Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\Qspa77-bionano-juicer\\EXP_REFINEFINAL1_bppAdjust_cmap_NbQLD-hybrid-3racon-1pilon_fasta_NGScontigs_HYBRID_SCAFFOLD.final.hic";
-//        Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.final.hic";
 //        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.rawchrom.fasta";
 //        Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\before_bionano\\CNbD.contigs.rawchrom.hic";
 //        Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\data\\fff.hic";
@@ -130,6 +129,7 @@ public class Citrus  extends JFrame {
 
           Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\LAB_bionano_part6\\LAB_bionano_part.final.hic";
           Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\LAB_bionano_part2\\LAB_bionano_part.final.hic";
+          Hic_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.final.hic";
 //        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\QLD082\\EXP_REFINEFINAL1_bppAdjust_cmap_NbQLD-hybrid-3racon-1pilon_fasta_NGScontigs_HYBRID_SCAFFOLD.final.fasta";
 //        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB\\CNbD.contigs.final.hic";
 //        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB\\CNbD.contigs.FINAL.fasta";
@@ -315,8 +315,8 @@ public class Citrus  extends JFrame {
         vbox1.add(jScrollPane);
         pop_jpanel.add(vbox1);
         this.add(pop_jpanel);
-        readIn_Hic();
         readIn_Assembly();
+        readIn_Hic();
         readIn_Fasta();
         create_popup_menu();
         repaint();
@@ -1064,18 +1064,32 @@ public class Citrus  extends JFrame {
         }
     }
     
-    private int genome2pix(long genome_position){
-        return canvas.MARGIN+(int) (genome_position / canvas.scale / 2);
-    }
+//    private int genome2pix(long genome_position){
+//        return canvas.MARGIN+(int) (genome_position / canvas.scale / 2);
+//    }
     
     private long pix2Genome(int pis_pos){
-        return (pis_pos - canvas.MARGIN) * canvas.scale * 1L;
+        return (pis_pos - canvas.MARGIN) * canvas.bpBinSize * 1L;
+    }
+    
+    void adjust_bpBinSizes() {
+        long total_genome_size = 0;
+        for (int superfold : canvas.assembly_order_map.keySet()) {
+            total_genome_size += canvas.assembly_order_map.get(superfold).size_in_superscaffold;
+        }
+        double ratio_assembly_Hic = (canvas.genome_size_assembly * 1000L / total_genome_size) / 1000.0;
+        for (int i = 0; i < HH.bpBinSizes.length; i++) {
+            HH.bpBinSizes[i] = (int) (HH.bpBinSizes[i] / ratio_assembly_Hic);
+        }
     }
     
     private void readIn_Hic(){
         Hic_fn = Hic_fn_jTextField.getText();
         try {
             HH = new Hic_header(Hic_fn);
+            adjust_bpBinSizes();
+            
+            canvas.set_genome_size_assembly(HH.getChr("assembly").getLength());
             Matrix m = new Matrix(Hic_fn, HH.getVersion(), HH.getMasterIndex(), HH.getChromosomes());
             Hic_data.clear();
             for (String key : HH.getMasterIndex().keySet()) {
@@ -2415,8 +2429,8 @@ add_needs_move_other_block(blockBinCount, blockColumnCount, dat, block_no, idx_X
             Hic_fn = file.getAbsolutePath();
             Hic_fn_jTextField.setText(file.getAbsolutePath());
             jButton0.setEnabled(false);
-            readIn_Hic();
             readIn_Assembly();
+            readIn_Hic();
             readIn_Fasta();
             jButton0.setEnabled(true);
         }

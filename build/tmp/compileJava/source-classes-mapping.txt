@@ -31,10 +31,10 @@ Citrus/JDragableViewport.java
  Citrus.JDragableViewport$MouseDragHandler
 Citrus/writeHic.java
  Citrus.writeHic
-Citrus/utility_access_binary_file.java
- Citrus.utility_access_binary_file
 Citrus/NormalizationType.java
  Citrus.NormalizationType
+Citrus/utility_access_binary_file.java
+ Citrus.utility_access_binary_file
 Citrus/History.java
  Citrus.History
 Citrus/writerHic.java
