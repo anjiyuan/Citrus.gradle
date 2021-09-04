@@ -340,6 +340,9 @@ public class Citrus  extends JFrame {
         x_axis.setPreferredSize(new Dimension(canvas_width + 0, 20));
         y_axis.setPreferredSize(new Dimension(20, canvas_width + 0));
         
+        x_axis.setLength(canvas_width);
+        y_axis.setLength(canvas_width);
+        
         canvas.buffered_images.clear();
 //int  fuck=Hic_data.get(chr_chr).get(1).contactRec_per_block.get(4).get(245071).binX;
 //contactRec_per_block.get(block_no).get(idx_X).binX
