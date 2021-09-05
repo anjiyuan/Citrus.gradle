@@ -1,1 +1,1 @@
-# Citrus: Editing of HiC data for de novo genome assembly
+# Citrus: Editing HiC data for de novo genome assembly
