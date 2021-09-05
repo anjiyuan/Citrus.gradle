@@ -766,7 +766,7 @@ public class Citrus  extends JFrame {
         popup.add(menuItem1);
         
         popup.addSeparator();
-        JMenuItem menuItem = new JMenuItem("give me sequence");
+        JMenuItem menuItem = new JMenuItem("fetch sequence");
         menuItem.setMnemonic(KeyEvent.VK_F);
         menuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -779,7 +779,7 @@ public class Citrus  extends JFrame {
         dialog_sequence.setSize(new Dimension(350, 350));
         popup.add(menuItem);
         
-        JMenuItem meta_menu = new JMenuItem("give me metadata ");
+        JMenuItem meta_menu = new JMenuItem("show metadata");
         meta_menu.setMnemonic(KeyEvent.VK_F);
         meta_menu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
