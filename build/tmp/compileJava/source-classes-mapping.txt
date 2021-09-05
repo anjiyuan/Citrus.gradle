@@ -22,31 +22,6 @@ Citrus/contact_position.java
 Citrus/MyBufferedImage.java
  Citrus.MyBufferedImage
  Citrus.cmp_Point
-Citrus/Write_HIC.java
- Citrus.Write_HIC
-Citrus/Matrix.java
- Citrus.Matrix
-Citrus/JDragableViewport.java
- Citrus.JDragableViewport
- Citrus.JDragableViewport$MouseDragHandler
-Citrus/writeHic.java
- Citrus.writeHic
-Citrus/NormalizationType.java
- Citrus.NormalizationType
-Citrus/utility_access_binary_file.java
- Citrus.utility_access_binary_file
-Citrus/History.java
- Citrus.History
-Citrus/writerHic.java
- Citrus.writerHic
-Citrus/generateGenome.java
- Citrus.generateGenome
-Citrus/Block.java
- Citrus.Block
-Citrus/Canvas.java
- Citrus.Canvas
- Citrus.x_scale
- Citrus.y_scale
 Citrus/Citrus.java
  Citrus.Citrus
  Citrus.Citrus$1
@@ -63,5 +38,30 @@ Citrus/Citrus.java
  Citrus.Citrus$7
  Citrus.Citrus$8
  Citrus.Citrus$9
+Citrus/Matrix.java
+ Citrus.Matrix
+Citrus/JDragableViewport.java
+ Citrus.JDragableViewport
+ Citrus.JDragableViewport$MouseDragHandler
+Citrus/writeHic.java
+ Citrus.writeHic
+Citrus/Canvas.java
+ Citrus.Canvas
+ Citrus.x_scale
+ Citrus.y_scale
 Citrus/SupperScaffold.java
  Citrus.SupperScaffold
+Citrus/History.java
+ Citrus.History
+Citrus/writerHic.java
+ Citrus.writerHic
+Citrus/generateGenome.java
+ Citrus.generateGenome
+Citrus/Block.java
+ Citrus.Block
+Citrus/utility_access_binary_file.java
+ Citrus.utility_access_binary_file
+Citrus/NormalizationType.java
+ Citrus.NormalizationType
+Citrus/Write_HIC.java
+ Citrus.Write_HIC
