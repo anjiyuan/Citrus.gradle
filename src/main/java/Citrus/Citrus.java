@@ -486,6 +486,10 @@ public class Citrus  extends JFrame {
                                 if (selected_next_order > -1) {
                                     break;
                                 }
+                                if(found){//last previous chrom
+                                    selected_next_order = canvas.assembly_chr_order_list.get(chrom_no).get(0);
+                                    break;
+                                }
                                 for (int order_no : canvas.assembly_chr_order_list.get(chrom_no)) {
                                     if (found) {
                                         selected_next_order = order_no;
@@ -495,9 +499,9 @@ public class Citrus  extends JFrame {
                                         found = true;
                                     }
                                 }
-                                if(found && (selected_next_order == -1)){//select one is the very end
-                                    selected_next_order = Integer.MAX_VALUE;
-                                }
+                            }
+                            if(found && (selected_next_order == -1)){//select one is the very end
+                                selected_next_order = Integer.MAX_VALUE;
                             }
                             history.push(new History(1, canvas.selected_order, selected_next_order));
                         }else if(canvas.ctrl_down){
@@ -1925,33 +1929,6 @@ public class Citrus  extends JFrame {
             List<binX_range> X_range = get_binX_range(dat, y_pix_no, insert_pix_no, selected_min_pix_no);
             tmp9.add(X_range);
         }
-        for (int y_no = 0; y_no < tmp4.size(); y_no++) {//4
-            for (int idx_X_range = 0; idx_X_range < tmp4.get(y_no).size(); idx_X_range++) {
-                int block_no = tmp4.get(y_no).get(idx_X_range).block_no;
-                for (int idx_X = tmp4.get(y_no).get(idx_X_range).start_idx; idx_X < tmp4.get(y_no).get(idx_X_range).stop_idx; idx_X++) {
-                    dat.contactRec_per_block.get(block_no).get(idx_X).binX -= selected_min_pix_no - insert_pix_no;
-                    dat.contactRec_per_block.get(block_no).get(idx_X).binY -= selected_min_pix_no - insert_pix_no;
-//if(dat.contactRec_per_block.get(block_no).get(idx_X).binX > dat.contactRec_per_block.get(block_no).get(idx_X).binY){
-//    int debug = 0;
-//}
-add_needs_move_other_block(blockBinCount, blockColumnCount, dat, block_no, idx_X, need_re_sort_block_no, need_to_move_other_block, block_to_move);
-//int new_block_no = dat.contactRec_per_block.get(block_no).get(idx_X).binY / blockBinCount * blockColumnCount + dat.contactRec_per_block.get(block_no).get(idx_X).binX / blockBinCount;
-//if(new_block_no != block_no){
-////                        if ((dat.contactRec_per_block.get(block_no).get(idx_X).binY < blockBinCount * block_no)
-////                            || (dat.contactRec_per_block.get(block_no).get(idx_X).binY > blockBinCount * (block_no + 1))) {
-//                        if (block_to_move.isEmpty() || ((block_to_move.get(block_to_move.size() - 1).block_no == block_no) && (block_to_move.get(block_to_move.size() - 1).idx == idx_X - 1))) {
-//                            block_to_move.add(new binX_idx(block_no, idx_X));
-//                        } else {
-//                            need_to_move_other_block.add(new ArrayList<binX_idx> (block_to_move));
-//                            block_to_move.clear();
-//                            block_to_move.add(new binX_idx(block_no, idx_X));
-//                        }                                                
-////                        need_to_move_other_block.add(new binX_idx(block_no, idx_X));
-//                    }
-//                    need_re_sort_block_no.add(block_no);
-                }
-            }
-        }
         List<List> tmp6 = new ArrayList<>();//6
         for (int y_pix_no = selected_min_pix_no - 1; y_pix_no >= insert_pix_no; y_pix_no--) {//6
             List<binX_range> X_range = get_binX_range(dat, y_pix_no, insert_pix_no, y_pix_no);
@@ -1975,6 +1952,33 @@ add_needs_move_other_block(blockBinCount, blockColumnCount, dat, block_no, idx_X
 //                            block_to_move.clear();
 //                            block_to_move.add(new binX_idx(block_no, idx_X));
 //                        }                                                
+////                        need_to_move_other_block.add(new binX_idx(block_no, idx_X));
+//                    }
+//                    need_re_sort_block_no.add(block_no);
+                }
+            }
+        }
+        for (int y_no = 0; y_no < tmp4.size(); y_no++) {//4
+            for (int idx_X_range = 0; idx_X_range < tmp4.get(y_no).size(); idx_X_range++) {
+                int block_no = tmp4.get(y_no).get(idx_X_range).block_no;
+                for (int idx_X = tmp4.get(y_no).get(idx_X_range).start_idx; idx_X < tmp4.get(y_no).get(idx_X_range).stop_idx; idx_X++) {
+                    dat.contactRec_per_block.get(block_no).get(idx_X).binX -= selected_min_pix_no - insert_pix_no;
+                    dat.contactRec_per_block.get(block_no).get(idx_X).binY -= selected_min_pix_no - insert_pix_no;
+//if(dat.contactRec_per_block.get(block_no).get(idx_X).binX > dat.contactRec_per_block.get(block_no).get(idx_X).binY){
+//    int debug = 0;
+//}
+                    add_needs_move_other_block(blockBinCount, blockColumnCount, dat, block_no, idx_X, need_re_sort_block_no, need_to_move_other_block, block_to_move);
+//int new_block_no = dat.contactRec_per_block.get(block_no).get(idx_X).binY / blockBinCount * blockColumnCount + dat.contactRec_per_block.get(block_no).get(idx_X).binX / blockBinCount;
+//if(new_block_no != block_no){
+////                        if ((dat.contactRec_per_block.get(block_no).get(idx_X).binY < blockBinCount * block_no)
+////                            || (dat.contactRec_per_block.get(block_no).get(idx_X).binY > blockBinCount * (block_no + 1))) {
+//                        if (block_to_move.isEmpty() || ((block_to_move.get(block_to_move.size() - 1).block_no == block_no) && (block_to_move.get(block_to_move.size() - 1).idx == idx_X - 1))) {
+//                            block_to_move.add(new binX_idx(block_no, idx_X));
+//                        } else {
+//                            need_to_move_other_block.add(new ArrayList<binX_idx> (block_to_move));
+//                            block_to_move.clear();
+//                            block_to_move.add(new binX_idx(block_no, idx_X));
+//                        }
 ////                        need_to_move_other_block.add(new binX_idx(block_no, idx_X));
 //                    }
 //                    need_re_sort_block_no.add(block_no);
