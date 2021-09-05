@@ -31,3 +31,7 @@ The slider bar of "**color range**" changes the depth of color.
     1. after selecting blocks, right-clicking mouse shows menu to have various functions for
 the selected block.
        ![image](image/menu.png)
+6. how to spilt one block into two?
+    1. after selecting blocks, move mouse on the  diagonal in the blocks. 
+the cursor changes to cross and left click the mouse, the block will be splitted into two.
+       ![image](image/cutting.png)
