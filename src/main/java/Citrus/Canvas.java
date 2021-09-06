@@ -269,29 +269,53 @@ public class Canvas extends JPanel {
 //                    canvas.assembly_order_map.get(superfold).display_size *= HH.getChr("assembly").getLength() / total_genome_size;
 //                    canvas.assembly_order_map.get(superfold).display_start *= HH.getChr("assembly").getLength() / total_genome_size;
 //                }
-        
-        
-        
+
         for(int chr_no : assembly_chr_order_list.keySet()){
             List<Integer> order_per_chr = assembly_chr_order_list.get(chr_no);
             g2D.setColor(Color.green);
-            int chr_size = 0;
+            long chr_size = 0;
             for(int order_no : order_per_chr){
                 SupperScaffold sc = assembly_order_map.get(order_no);
                 sc.genome_position = offset;
 //                int pos = offset + sc.start / scale;
-                sc.display_start = (int) (offset / (bpBinSize * 1.0) + 0.5);
-                sc.display_size = (int)(sc.size_in_superscaffold / (bpBinSize * 1.0) + 0.5);
+                sc.display_start = Math.round(offset / (float)bpBinSize);
+                sc.display_size =  Math.round((offset + sc.size_in_superscaffold) / (float)bpBinSize) - sc.display_start;
 //                System.out.println(order_no + " "+sc.display_start+" "+sc.display_size);
                 g2D.drawRect(MARGIN+sc.display_start, MARGIN+sc.display_start, sc.display_size, sc.display_size);
                 offset += sc.size_in_superscaffold;
                 chr_size += sc.size_in_superscaffold;
+                System.out.println("sc.display_start="+sc.display_start+" sc.display_size="+sc.display_size);
             }
             g2D.setColor(Color.blue);
-            g2D.drawRect(MARGIN + (int) ((offset - chr_size) / bpBinSize), MARGIN + (int) ((offset - chr_size) / bpBinSize), chr_size / bpBinSize, chr_size / bpBinSize);
+            g2D.drawRect(MARGIN + Math.round((offset - chr_size) / (float)bpBinSize), MARGIN + Math.round((offset - chr_size) / (float)bpBinSize),
+                    Math.round(chr_size / (float)bpBinSize), Math.round(chr_size / (float)bpBinSize));
+//            System.out.println(Integer.toString(Math.round((offset - chr_size) / (float)bpBinSize)) + " : " + Integer.toString(Math.round(chr_size / (float)bpBinSize)));
 //            g2D.drawRect(MARGIN + (int) ((offset - chr_size) / scale / 2), MARGIN + (int) ((offset - chr_size) / scale / 2), chr_size / scale / 2, chr_size / scale / 2);
         }
         g2D.setStroke(ss);
+
+
+//
+//        for(int chr_no : assembly_chr_order_list.keySet()){
+//            List<Integer> order_per_chr = assembly_chr_order_list.get(chr_no);
+//            g2D.setColor(Color.green);
+//            int chr_size = 0;
+//            for(int order_no : order_per_chr){
+//                SupperScaffold sc = assembly_order_map.get(order_no);
+//                sc.genome_position = offset;
+////                int pos = offset + sc.start / scale;
+//                sc.display_start = (int) (offset / (bpBinSize * 1.0) + 0.5);
+//                sc.display_size = (int)(sc.size_in_superscaffold / (bpBinSize * 1.0) + 0.5);
+////                System.out.println(order_no + " "+sc.display_start+" "+sc.display_size);
+//                g2D.drawRect(MARGIN+sc.display_start, MARGIN+sc.display_start, sc.display_size, sc.display_size);
+//                offset += sc.size_in_superscaffold;
+//                chr_size += sc.size_in_superscaffold;
+//            }
+//            g2D.setColor(Color.blue);
+//            g2D.drawRect(MARGIN + (int) ((offset - chr_size) / (bpBinSize * 1.0) + 0.5), MARGIN + (int) ((offset - chr_size) / (bpBinSize * 1.0) + 0.5), (int)(chr_size / (bpBinSize * 1.0) + 0.5), (int)(chr_size / (bpBinSize * 1.0) + 0.5));
+////            g2D.drawRect(MARGIN + (int) ((offset - chr_size) / scale / 2), MARGIN + (int) ((offset - chr_size) / scale / 2), chr_size / scale / 2, chr_size / scale / 2);
+//        }
+//        g2D.setStroke(ss);
     }
     
     
