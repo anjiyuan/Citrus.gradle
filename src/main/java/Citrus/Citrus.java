@@ -137,13 +137,14 @@ public class Citrus  extends JFrame {
 //        Assembly_fn = "C:\\Jiyuan\\sourceCode\\juicer\\before_bionano\\CNbD.contigs.rawchrom.assembly";
 //        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\before_bionano\\CNbD.contigs.rawchrom.fasta";
         
-        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.final.fasta";
-        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\LAB_bionano_part2\\LAB_bionano_part.final.fasta";
+//        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\CN3KP_BNO.final.fasta";
+//        fasta_fn = "C:\\Jiyuan\\sourceCode\\juicer\\LAB320\\LAB_bionano_part2\\LAB_bionano_part.final.fasta";
+        Hic_fn = System.getProperty("user.dir");
         pop_jpanel = new JPanel();
         Box vbox1 = Box.createVerticalBox();
         Box hbox01 = Box.createHorizontalBox();
         Box hbox0 = Box.createHorizontalBox();
-        
+
         jButton0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton0.setEnabled(false);
@@ -315,11 +316,11 @@ public class Citrus  extends JFrame {
         vbox1.add(jScrollPane);
         pop_jpanel.add(vbox1);
         this.add(pop_jpanel);
-        readIn_Assembly();
-        readIn_Hic();
-        readIn_Fasta();
-        create_popup_menu();
-        repaint();
+//        readIn_Assembly();
+//        readIn_Hic();
+//        readIn_Fasta();
+//        create_popup_menu();
+//        repaint();
     }
 
     @Override
@@ -330,6 +331,10 @@ public class Citrus  extends JFrame {
 //        canvas.setPreferredSize(new Dimension(view_width + 50, view_width + 50));
         
 //        int resolution = Integer.parseInt(resolu.getText());
+        if(Hic_data.isEmpty()){
+            JOptionPane.showMessageDialog(null,"click \"open Hic file\" to load Hic file");
+            return;
+        }
         double display_color_range = color_range_slide_value;// Double.parseDouble(color_range.getText());
         int canvas_width = Hic_data.get(chr_chr).get(resolution).blockBinCount *  Hic_data.get(chr_chr).get(resolution).blockColumnCount + 10;
         canvas.setSize(new Dimension(canvas_width + 0, canvas_width + 0));x_axis.getWidth();
