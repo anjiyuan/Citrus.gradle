@@ -1,13 +1,13 @@
 # Citrus: Editing HiC data for de novo genome assembly
-using Hic sequencing data and scaffolds, [juicer](https://github.com/aidenlab/juicer) and [3D-DNA](https://github.com/aidenlab/3d-dna) 
-are used to re-arrange HiC data (xxx.hic format) and 
-split/re-ordered super-scaffold (xxx.assembly). The output usually need to be tuned
-or adjust base on the HiC data. [juicebox](https://github.com/aidenlab/Juicebox) was developed
-for this purpose. however, Current Juicebox does not have function to save updated Hic data and 
-summrize chromosome sequence. 
-Citrus edits super-scaffolds according to chromatin conformation 
-in represented in xxx.hic. updated hic, assembly and chromosome level sequence will be 
-saved.
+[juicer](https://github.com/aidenlab/juicer) and [3D-DNA](https://github.com/aidenlab/3d-dna) 
+are two tools that re-arrange HiC data (xxx.hic format) and 
+split/re-order super-scaffold data(xxx.assembly) to imporve de novo assembly. [juicebox](https://github.com/aidenlab/Juicebox) was specifically
+designed to tune
+or adjuste genomic sequences based on on the HiC data. However, the current 
+Juicebox version does not have a function to save updated Hic data and 
+summraize chromosome sequences. Thus we created 
+Citrus which can edit super-scaffolds according to chromatin conformation data captured 
+in xxx.hic. Citrus updates HiC and assemble and chromosome level sequences.
 ## quick start
 1. run Citrus
     1. **Linux or MacOs:**  > bash Citrus.sh
