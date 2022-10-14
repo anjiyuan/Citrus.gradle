@@ -17,21 +17,21 @@ in xxx.hic. Citrus updates HiC and assemble and chromosome level sequences.
     after starting Citrus, the figure above is generated, "**Resolution(BP)**" dropdown menu 
 Zooms in/out Hic data. "**refresh**" button is clicked to make the changes. 
 The slider bar of "**color range**" changes the depth of color.
-3. how to select block/blocks of interest?
-    1. shift + mouse-left-click: select one block (green block)
+3. Selecting block/blocks of interest
+    1. Press shift + mouse-left-click: select one block (green block)
        ![image](image/block_select.png)
     2. control + mouse-left-click: select one chromosome block (blue block)
        ![image](image/ctrl_select.png)
-4. how to move block?
-    1. locate cursor to insert. if cursor cover more than one edge of blocks, popup 
-   window "multi blocks in the area" appears. higher resolution is needed. when 
-   two ends of arrow appears, left click to make the selected block to insert.
+4. Moving the block?
+    1. Locate the cursor to insert. If the cursor covers more than one edge of the block, the popup 
+   window "multi blocks in the area" appears. This indicates a higher resolution is needed. When 
+   two ends of the arrow appears, left click to insert the selected block.
        ![image](image/insert_superscaffold.png)
-5. how to transpose block, get sequence of selected block?
-    1. after selecting blocks, right-clicking mouse shows menu to have various functions for
+5. Transposing a block and retriving sequences of the selected block?
+    1. After selecting the blocks, right-clicking the mouse shows the menu to of various functions for
 the selected block.
        ![image](image/menu.png)
-6. how to spilt one block into two?
-    1. after selecting blocks, move mouse on the  diagonal in the blocks. 
-the cursor changes to cross and left click the mouse, the block will be splitted into two.
+6. Spilting one blocks?
+    1. After selecting the blocks, move the mouse cursor on the  diagonal line in the block. 
+The cursor then changes to a cross and left clicking the mouse will split the block into two.
        ![image](image/cutting.png)
